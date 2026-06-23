@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: ApiGateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://UserMicroservice
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - AuthenticationFilter
+
+        - id: hotel-service
+          uri: lb://HotelService
+          predicates:
+            - Path=/api/hotels/**
+          filters:
+            - AuthenticationFilter
+
+        - id: rating-service
+          uri: lb://RatingService
+          predicates:
+            - Path=/api/ratings/**
+          filters:
+            - AuthenticationFilter
+
+        - id: identity-service
+          uri: lb://Identity-Service
+          predicates:
+            - Path=/auth/**
+
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+server:
+  port: 8084
+
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+
+
+#okta:
+#  oauth2:
+#    issuer: https://integrator-9569617.okta.com/oauth2/default
+#    client-id: 0oavbl9nafs5GqeIv697
+#    client-secret: t1PoyiuGgSAyPGg3tcui80jbfvIj2klRCQTFMKBq500W18Qv5-aqPmEiOc_UO6VE
+#    redirect-uri: http://localhost:8084/login/oauth2/code/okta
+#    scopes:
+#      - openid
+#      - profile
+#      - email
+#      - profile_access
+
+
+
+
